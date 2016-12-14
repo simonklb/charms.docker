@@ -25,99 +25,99 @@ class TestCompose:
     def test_build(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.build()
-            s.assert_called_with('docker-compose build --force-rm',
+            s.assert_called_with('build --force-rm',
                                  compose.workspace, None)
             compose.build('foobar')
-            expect = 'docker-compose build --force-rm foobar'
+            expect = 'build --force-rm foobar'
             s.assert_called_with(expect, compose.workspace, None)
 
             compose.build('foobar', no_cache=True, pull=True)
-            expect = 'docker-compose build --force-rm --no-cache --pull foobar'
+            expect = 'build --force-rm --no-cache --pull foobar'
             s.assert_called_with(expect, compose.workspace, None)
 
             compose.build('foobar', force_rm=False)
-            expect = 'docker-compose build foobar'
+            expect = 'build foobar'
             s.assert_called_with(expect, compose.workspace, None)
 
             compose.build(no_cache=True)
-            expect = 'docker-compose build --force-rm --no-cache'
+            expect = 'build --force-rm --no-cache'
 
     def test_kill_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.kill('nginx')
-            expect = 'docker-compose kill nginx'
+            expect = 'kill nginx'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_kill_service_default(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.kill()
-            expect = 'docker-compose kill'
+            expect = 'kill'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_pull_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.pull('nginx')
-            s.assert_called_with('docker-compose pull nginx',
+            s.assert_called_with('pull nginx',
                                  compose.workspace, None)
 
     def test_pull_service_default(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.pull()
-            s.assert_called_with('docker-compose pull', compose.workspace,
+            s.assert_called_with('pull', compose.workspace,
                                  None)
 
     def test_restart(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.restart('nginx')
-            s.assert_called_with('docker-compose restart nginx',
+            s.assert_called_with('restart nginx',
                                  compose.workspace, None)
 
     def test_restart_default(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.restart()
-            s.assert_called_with('docker-compose restart', compose.workspace,
+            s.assert_called_with('restart', compose.workspace,
                                  None)
 
     def test_up_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.up('nginx')
-            expect = 'docker-compose up -d nginx'
+            expect = 'up -d nginx'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_up_default_formation(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.up()
-            expect = 'docker-compose up -d'
+            expect = 'up -d'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_start_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.start('nginx')
-            expect = 'docker-compose start nginx'
+            expect = 'start nginx'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_rm_service_default(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.rm()
-            expect = 'docker-compose rm -f'
+            expect = 'rm -f'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_rm_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.rm('nginx')
-            expect = 'docker-compose rm -f nginx'
+            expect = 'rm -f nginx'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_scale(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.scale('nginx', 3)
-            expect = 'docker-compose scale nginx=3'
+            expect = 'scale nginx=3'
             s.assert_called_with(expect, compose.workspace, None)
 
     def test_stop_service(self, compose):
         with patch('charms.docker.compose.run') as s:
             compose.stop('nginx')
-            expect = 'docker-compose stop -t 10 nginx'
+            expect = 'stop -t 10 nginx'
             s.assert_called_with(expect, compose.workspace, None)
 
     @patch('charms.docker.runner.chdir')

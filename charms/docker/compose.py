@@ -37,7 +37,7 @@ class Compose:
         :param no_cache: Do not use cache when building the image
         :param pull: Always attempt to pull a newer version of the image
         '''
-        cmd = "docker-compose build"
+        cmd = "build"
 
         if force_rm:
             cmd = "{} --force-rm".format(cmd)
@@ -57,9 +57,9 @@ class Compose:
         :param service: if defined will only kill that service.
         '''
         if service:
-            cmd = "docker-compose kill {}".format(service)
+            cmd = "kill {}".format(service)
         else:
-            cmd = "docker-compose kill"
+            cmd = "kill"
         run(cmd, self.workspace, self.socket)
 
     def pull(self, service=None):
@@ -69,9 +69,9 @@ class Compose:
         :param service: if defined, only pulls the image for specified service.
         '''
         if service:
-            cmd = "docker-compose pull {}".format(service)
+            cmd = "pull {}".format(service)
         else:
-            cmd = "docker-compose pull"
+            cmd = "pull"
         run(cmd, self.workspace, self.socket)
 
     def restart(self, service=None):
@@ -81,9 +81,9 @@ class Compose:
         :param service: if defined, only restarts the specified service.
         '''
         if service:
-            cmd = "docker-compose restart {}".format(service)
+            cmd = "restart {}".format(service)
         else:
-            cmd = "docker-compose restart"
+            cmd = "restart"
         run(cmd, self.workspace, self.socket)
 
     def rm(self, service=None):
@@ -93,9 +93,9 @@ class Compose:
         :param service: if defined only the specified service.
         '''
         if service:
-            cmd = "docker-compose rm -f {}".format(service)
+            cmd = "rm -f {}".format(service)
         else:
-            cmd = "docker-compose rm -f"
+            cmd = "rm -f"
         run(cmd, self.workspace, self.socket)
 
     def scale(self, service, count):
@@ -105,7 +105,7 @@ class Compose:
         :param service: Service to scale as defined in docker-compose.yml
         :param count: number of containers to scale
         '''
-        cmd = "docker-compose scale {}={}".format(service, count)
+        cmd = "scale {}={}".format(service, count)
         run(cmd, self.workspace, self.socket)
 
     def start(self, service):
@@ -114,7 +114,7 @@ class Compose:
 
         :param service: Service to start
         '''
-        cmd = "docker-compose start {}".format(service)
+        cmd = "start {}".format(service)
         run(cmd, self.workspace, self.socket)
 
     def stop(self, service, timeout=10):
@@ -124,7 +124,7 @@ class Compose:
         :param service: Service to stop.
         :param timeout: specify a shutdown timeout in seconds.
         '''
-        cmd = "docker-compose stop -t {} {}".format(timeout, service)
+        cmd = "stop -t {} {}".format(timeout, service)
         run(cmd, self.workspace, self.socket)
 
     def up(self, service=None):
@@ -134,7 +134,7 @@ class Compose:
         :param service: if defined only launches the specified service
         '''
         if service:
-            cmd = "docker-compose up -d {}".format(service)
+            cmd = "up -d {}".format(service)
         else:
-            cmd = "docker-compose up -d"
+            cmd = "up -d"
         run(cmd, self.workspace, self.socket)

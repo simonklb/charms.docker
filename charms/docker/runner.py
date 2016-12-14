@@ -16,6 +16,9 @@ def run(cmd, workspace, socket=None):
     :usage: c.run('docker-compose ps')
     '''
 
+    if workspace.context == "compose":
+        cmd = "docker-compose {}".format(cmd)
+
     with chdir("{}".format(workspace)):
         if socket:
             os.environ['DOCKER_HOST'] = socket
