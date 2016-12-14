@@ -3,7 +3,7 @@ from .workspace import Workspace
 
 
 class Compose:
-    def __init__(self, workspace, strict=True, socket=None):
+    def __init__(self, workspace, strict=True, socket=None, file=None):
         '''
         Object to manage working with Docker-Compose on the CLI. exposes
         a natural language for performing common tasks with docker in
@@ -15,8 +15,12 @@ class Compose:
 
         :param socket: - Host-string for a remote docker-engine other than
         the implied default '/var/run/docker.sock'.
+
+        :param file: Custom Compose file(s). Either a list of filenames or a
+                     single filename string.
+            default: None
         '''
-        self.workspace = Workspace(workspace)
+        self.workspace = Workspace(workspace, file=file)
         if strict:
             self.workspace.validate()
         if socket:

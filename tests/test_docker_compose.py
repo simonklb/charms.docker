@@ -130,6 +130,19 @@ class TestCompose:
 
     @patch('charms.docker.runner.chdir')
     @patch('charms.docker.runner.check_output')
+    def test_run_with_custom_workspace_file(self, ccmock, chmock):
+        compose = Compose('files/workspace', strict=False, file='foo')
+        compose.up('nginx')
+        ccmock.assert_called_with(['docker-compose', '-f', 'foo', 'up', '-d',
+                                   'nginx'])
+
+        compose = Compose('files/workspace', strict=False, file=['foo', 'bar'])
+        compose.up('nginx')
+        ccmock.assert_called_with(['docker-compose', '-f', 'foo', '-f', 'bar',
+                                   'up', '-d', 'nginx'])
+
+    @patch('charms.docker.runner.chdir')
+    @patch('charms.docker.runner.check_output')
     def test_socket_run_has_host_output(self, ccmock, chmock):
         compose = Compose('files/workspace', strict=False, socket='test')
         compose.up()

@@ -12,7 +12,8 @@ class Docker:
     a charmer. Provides stateless operations of a running docker daemon
     '''
 
-    def __init__(self, socket="unix:///var/run/docker.sock", workspace=None):
+    def __init__(self, socket="unix:///var/run/docker.sock", workspace=None,
+                 file=None):
         '''
         Create a Docker object with socket and optional workspace.
         
@@ -21,9 +22,13 @@ class Docker:
 
         :param workspace: Path to directory containing a Dockerfile
             default: None
+
+        :param file: Custom Dockerfile filename
+            default: None
         '''
         self.socket = socket
-        self.workspace = Workspace(workspace or os.getcwd(), context="docker")
+        self.workspace = Workspace(workspace or os.getcwd(), context="docker",
+                                   file=file)
 
     def login(self, user, password, email, registry=None):
         '''

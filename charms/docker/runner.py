@@ -16,12 +16,12 @@ def run(cmd, workspace, socket=None, with_output=True):
     :usage: c.run('docker-compose ps')
     '''
 
-    if workspace.file:
-        files = workspace.file
-        for f in reversed(files) if isinstance(files, list) else [files]:
-            cmd = "-f {} {}".format(f, cmd)
-
     if workspace.context == "compose":
+        if workspace.file:
+            files = workspace.file
+            for f in reversed(files) if isinstance(files, list) else [files]:
+                cmd = "-f {} {}".format(f, cmd)
+
         cmd = "docker-compose {}".format(cmd)
     else:
         cmd = "docker {}".format(cmd)
