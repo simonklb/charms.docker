@@ -1,8 +1,8 @@
 import json
 import os
-import subprocess
+from subprocess import CalledProcessError
 
-from shlex import split
+from .runner import run
 from .workspace import Workspace
 
 
@@ -23,8 +23,7 @@ class Docker:
             default: None
         '''
         self.socket = socket
-        if workspace:
-            self.workspace = Workspace(workspace)
+        self.workspace = Workspace(workspace or os.getcwd(), context="docker")
 
     def login(self, user, password, email, registry=None):
         '''
@@ -175,26 +174,15 @@ class Docker:
 
     def _run(self, cmd):
         ''' Abstracted run commands that returns only the response code'''
-        if self.socket:
-            cmd = "docker -H {} {}".format(self.socket, cmd)
-        else:
-            cmd = "docker {}".format(cmd)
-
         try:
-            return subprocess.check_call(split(cmd))
-        except subprocess.CalledProcessError as expect:
+            return run(cmd, self.workspace, self.socket, with_output=False)
+        except CalledProcessError as expect:
             print("Error: {0} returned: {1}".format(cmd, expect.returncode))
             return expect.returncode
 
     def _run_with_output(self, cmd):
         ''' Abstracted run commands that return text output '''
-        if self.socket:
-            cmd = "docker -H {} {}".format(self.socket, cmd)
-        else:
-            cmd = "docker {}".format(cmd)
-
         try:
-            output = subprocess.check_output(split(cmd)).decode('ascii')
-            return output.rstrip('\n')
-        except subprocess.CalledProcessError as expect:
+            return run(cmd, self.workspace, self.socket)
+        except CalledProcessError as expect:
             return "Error: {0} returned: {1}".format(cmd, expect.returncode)
